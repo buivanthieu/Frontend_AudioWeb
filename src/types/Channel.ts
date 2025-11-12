@@ -1,12 +1,12 @@
-import { PlaylistDto } from "./Playlist";
-import { TrackListDto } from "./Track";
+import { Playlist } from "./Playlist";
+import { TrackList } from "./Track";
 
-export interface ChannelListDto {
+export interface ChannelList {
     id : number;
     name : string;
 }
 
-export interface ChannelDto extends ChannelListDto {
-    trackListDtos: TrackListDto[];
-    playlistDtoes: PlaylistDto[];
+export interface Channel extends ChannelList {
+    trackLists: TrackList[];
+    playlistes: Playlist[];
 }

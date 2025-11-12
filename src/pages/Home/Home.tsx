@@ -1,6 +1,6 @@
 // src/pages/Home.tsx
 
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Container, Typography, Box, Grid, Stack, Chip, Button, Tabs, Tab, List,
@@ -8,20 +8,52 @@ import {
 import { ArrowForward, PlayArrow } from '@mui/icons-material';
 
 // Import DTOs và Component cần thiết
-import { Track, Playlist, TabPanelProps } from '../types/data';
-import TrackCard from '../components/TrackCard/TrackCard';
-import TrackListItem from '../components/TrackListItem/TrackListItem';
+
+import { Track, TrackList } from '../../types/Track';
+import { Playlist } from '../../types/Playlist';
+import TrackCard from '../../components/TrackCard/TrackCard';
+import TrackListItem from '../../components/TrackListItem/TrackListItem';
 
 // Giờ đây, các mảng Mock Data đã được gán kiểu TypeScript!
-
-const mockTracks: Track[] = [
+interface TabPanelProps {
+  children?: ReactNode;
+  index: number;
+  value: number;
+}
+const mockTracks: TrackList[] = [
   // Cấu trúc y hệt code mẫu bạn gửi, nhưng đã có kiểu Track[]
-  { id: '1', title: 'Tuyển tập truyện audio hay nhất - Tập 1', uploader: 'Channel Audio Story', uploaderId: 'channel-1', thumbnail: '/placeholder-track.jpg', duration: '25:30', views: 125000, uploadedAt: '2 ngày trước', audioUrl: '/sample-audio.mp3' },
-  { id: '2', title: 'Cuộc phiêu lưu kỳ thú - Phần 1', uploader: 'Người kể chuyện', uploaderId: 'channel-2', thumbnail: '/placeholder-track.jpg', duration: '45:20', views: 89000, uploadedAt: '1 tuần trước', audioUrl: '/sample-audio.mp3' },
-  { id: '3', title: 'Tình yêu và cuộc sống - Tập đặc biệt', uploader: 'Radio Tình Yêu', thumbnail: '/placeholder-track.jpg', duration: '30:15', views: 156000, uploadedAt: '3 ngày trước', audioUrl: '/sample-audio.mp3' },
-  { id: '4', title: 'Thám hiểm rừng sâu - Chương mở đầu', uploader: 'Adventure Audio', thumbnail: '/placeholder-track.jpg', duration: '35:45', views: 67000, uploadedAt: '5 ngày trước', audioUrl: '/sample-audio.mp3' },
-  { id: '5', title: 'Khoa học viễn tưởng - Tương lai xa', uploader: 'SciFi Stories', thumbnail: '/placeholder-track.jpg', duration: '40:10', views: 98000, uploadedAt: '1 tuần trước', audioUrl: '/sample-audio.mp3' },
-  { id: '6', title: 'Lịch sử Việt Nam - Thời kỳ độc lập', uploader: 'Lịch sử Việt', thumbnail: '/placeholder-track.jpg', duration: '50:25', views: 234000, uploadedAt: '2 ngày trước', audioUrl: '/sample-audio.mp3' },
+  {
+    id: 1,
+    title: 'Chuyện tình mùa đông',
+    audioUrl: '/sample-audio.mp3',
+    uploadedAt: '2 ngày trước',
+    categoryName: 'Tình cảm',
+    channelName: 'Channel Audio Story',
+    originalStoryName: 'Chuyện tình mùa đông',
+    tagNames: ['Tình cảm', 'Lãng mạn'],
+  },
+  {
+    id: 2,
+    title: 'Hành trình phiêu lưu',
+    audioUrl: '/sample-audio.mp3',
+    uploadedAt: '5 ngày trước',
+    categoryName: 'Phiêu lưu',
+    channelName: 'Người kể chuyện',
+    originalStoryName: 'Hành trình phiêu lưu',
+    tagNames: ['Phiêu lưu', 'Kỳ thú'],
+  },
+  {
+    id: 3,
+    title: 'Bí ẩn rừng sâu',
+    audioUrl: '/sample-audio.mp3',
+    uploadedAt: '1 tuần trước',
+    categoryName: 'Kinh dị',
+    channelName: 'Kênh Truyện Ma',
+    originalStoryName: 'Bí ẩn rừng sâu',
+    tagNames: ['Kinh dị', 'Huyền bí'],
+  }
+
+
 ];
 
 const mockPlaylists: Playlist[] = [
@@ -132,19 +164,19 @@ const Home: React.FC = () => {
                     </Typography>
                     
                     {/* Grid Layout và Vòng lặp */}
-                    <Grid container spacing={3}>
+                    <Grid columns={12} spacing={3}>
                         {mockTracks.map((track) => (
-                            <Grid item xs={6} sm={4} md={3} lg={2.4} key={track.id}>
-                                {/* TrackCard nhận DTO track và các hàm xử lý */}
-                                <TrackCard
-                                    track={track}
-                                    onClick={handleTrackClick}
-                                    onPlay={handlePlay}
-                                    onAddToPlaylist={handleAddToPlaylist}
-                                />
+                            <Grid size={{ xs: 6, sm: 4, md: 3, lg: 2 }} key={track.id}>
+                            <TrackCard
+                                track={track}
+                                onClick={handleTrackClick}
+                                onPlay={handlePlay}
+                                onAddToPlaylist={handleAddToPlaylist}
+                            />
                             </Grid>
                         ))}
                     </Grid>
+
                 </Box>
                 {/* Section Tracks Thịnh hành... (Tương tự) */}
             </TabPanel>

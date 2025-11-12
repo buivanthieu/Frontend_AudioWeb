@@ -1,12 +1,12 @@
-import { TrackListDto } from "./Track";
+import { TrackList } from "./Track";
 
-export interface OriginalStoryListDto {
+export interface OriginalStoryList {
     id: number;
     storyName: string;
     writerName: string;
 }
 
-export interface OriginalStoryDto extends OriginalStoryListDto {
+export interface OriginalStory extends OriginalStoryList {
     writerId: number;
-    trackListDtos: TrackListDto[];
+    trackLists: TrackList[];
 }

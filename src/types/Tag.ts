@@ -1,13 +1,13 @@
-import { TrackListDto } from "./Track";
+import { TrackList } from "./Track";
 
-export interface TagListDto {
+export interface TagList {
     id: number;
     name: string;
     description: string;
 }
 
-export interface TagDto extends TagListDto {
-    trackListDtos: TrackListDto[];
+export interface Tag extends TagList {
+    trackLists: TrackList[];
     
     
 }

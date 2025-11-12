@@ -57,15 +57,26 @@ const ImageContainer = styled(Box)(({ theme }) => ({
 
 interface TrackCardProps {
   track: {
-    id: string;
+    // id: string;
+    // title: string;
+    // uploader: string;
+    // uploaderId?: string;
+    // thumbnail?: string;
+    // duration: string; // e.g., "15:30"
+    // views?: number;
+    // uploadedAt?: string;
+    // audioUrl?: string;
+      id: number;
     title: string;
-    uploader: string;
-    uploaderId?: string;
-    thumbnail?: string;
-    duration: string; // e.g., "15:30"
-    views?: number;
-    uploadedAt?: string;
-    audioUrl?: string;
+    audioUrl: string;
+
+    uploadedAt: string; 
+
+    categoryName: string;
+    channelName: string;
+    originalStoryName: string;
+
+    tagNames: string[];
   };
   onPlay?: (id: string) => void;
   onAddToPlaylist?: (id: string) => void;
@@ -83,7 +94,7 @@ const TrackCard: React.FC<TrackCardProps> = ({
 
   const handlePlay = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onPlay?.(track.id);
+    onPlay?.(String(track.id));
   };
 
   const handleMenuOpen = (e: React.MouseEvent<HTMLElement>) => {
@@ -96,7 +107,7 @@ const TrackCard: React.FC<TrackCardProps> = ({
   };
 
   const handleAddToPlaylist = () => {
-    onAddToPlaylist?.(track.id);
+    onAddToPlaylist?.(String(track.id));
     handleMenuClose();
   };
 
@@ -109,11 +120,11 @@ const TrackCard: React.FC<TrackCardProps> = ({
 
   return (
     <>
-      <StyledCard onClick={() => onClick?.(track.id)}>
+      <StyledCard onClick={() => onClick?.(String(track.id))}>
         <ImageContainer>
           <CardMedia
             component="img"
-            image={track.thumbnail || '/placeholder-track.jpg'}
+            // image={track.thumbnail || '/placeholder-track.jpg'}
             alt={track.title}
             sx={{
               position: 'absolute',
@@ -155,7 +166,7 @@ const TrackCard: React.FC<TrackCardProps> = ({
               fontWeight: 600,
             }}
           >
-            {track.duration}
+            {/* {track.duration} */}
           </Box>
 
           {/* More menu button */}
@@ -217,20 +228,20 @@ const TrackCard: React.FC<TrackCardProps> = ({
             }}
             onClick={(e) => {
               e.stopPropagation();
-              if (track.uploaderId) {
-                navigate(`/channel/${track.uploaderId}`);
-              }
+              // if (track.uploaderId) {
+              //   navigate(`/channel/${track.uploaderId}`);
+              // }
             }}
           >
-            {track.uploader}
+            {/* {track.uploader} */}
           </Typography>
 
           <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', flexWrap: 'wrap' }}>
-            {track.views && (
+            {/* {track.views && (
               <Typography variant="caption" color="text.secondary">
                 {formatViews(track.views)}
               </Typography>
-            )}
+            )} */}
             {track.uploadedAt && (
               <>
                 <Typography variant="caption" color="text.secondary">•</Typography>

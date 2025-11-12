@@ -5,7 +5,7 @@ import theme from './theme/theme';
 import Header from './components/Layout/Header';
 import Navigation from './components/Layout/Navigation';
 import AudioPlayer from './components/AudioPlayer/AudioPlayer';
-import Home from './pages/Home';
+import Home from './pages/Home/Home';
 import TrackDetail from './pages/TrackDetail';
 import Channel from './pages/Channel';
 import Search from './pages/Search';

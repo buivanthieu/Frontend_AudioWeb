@@ -1,11 +1,11 @@
-import { TrackListDto } from "./Track";
+import { TrackList } from "./Track";
 
-export interface CategoryListDto {
+export interface CategoryList {
     id: number;
     name: string;
     description: string;
 }
 
-export interface CategoryDto extends CategoryListDto {
-    trackListDtos: TrackListDto[];
+export interface Category extends CategoryList {
+    trackLists: TrackList[];
 }

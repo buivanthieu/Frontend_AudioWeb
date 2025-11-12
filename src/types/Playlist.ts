@@ -1,1 +1,1 @@
-export interface PlaylistDto {}
+export interface Playlist {}

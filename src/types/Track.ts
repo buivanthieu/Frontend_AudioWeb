@@ -1,9 +1,9 @@
-import { CategoryListDto } from "./Category";
-import { ChannelListDto } from "./Channel";
-import { OriginalStoryListDto } from "./OriginalStory";
-import { TagListDto } from "./Tag";
+import { CategoryList } from "./Category";
+import { ChannelList } from "./Channel";
+import { OriginalStoryList } from "./OriginalStory";
+import { TagList } from "./Tag";
 
-export interface TrackListDto {
+export interface TrackList {
     id: number;
     title: string;
     audioUrl: string;
@@ -17,12 +17,12 @@ export interface TrackListDto {
     tagNames: string[];
 }
 
-export interface TrackDto extends TrackListDto {
+export interface Track extends TrackList {
 
-    categoryListDto: CategoryListDto;
-    channelListDto: ChannelListDto;
-    originalStoryListDto: OriginalStoryListDto;
+    categoryList: CategoryList;
+    channelList: ChannelList;
+    originalStoryList: OriginalStoryList;
 
-    tagListDtos: TagListDto[];
+    tagLists: TagList[];
 
 }
