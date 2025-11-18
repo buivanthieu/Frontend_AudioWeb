@@ -7,24 +7,22 @@ import {
   IconButton,
   InputBase,
   Box,
-  Avatar,
-  Menu,
-  MenuItem,
+  Button, // Import Button
   Badge,
-  Divider,
+  Stack,
 } from '@mui/material';
 import {
   Search as SearchIcon,
   Notifications as NotificationsIcon,
-  AccountCircle,
-  Favorite,
-  History,
-  Login as LoginIcon,
-  PersonAdd,
-  Settings,
+  CloudUpload, // Import CloudUpload cho nút upload
 } from '@mui/icons-material';
 import { styled, alpha } from '@mui/material/styles';
 
+// Import components đã tạo trước đó
+import AuthModal from '../Auth/AuthModal'; // Đảm bảo đường dẫn đúng
+import UserMenu from '../User/UserMenu'; // Đảm bảo đường dẫn đúng
+import TrackUploadModal from '../Track/TrackUploadModal';
+// --- Styled Components (Giữ nguyên) ---
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -60,129 +58,118 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: {
-      width: '20ch',
+      width: '30ch',
     },
   },
 }));
 
+// --- Header Component (Cập nhật) ---
 const Header: React.FC = () => {
-  const navigate = useNavigate();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [searchValue, setSearchValue] = useState('');
-  const open = Boolean(anchorEl);
+    const navigate = useNavigate();
 
-  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchValue.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchValue.trim())}`);
-    } else {
-      navigate('/search');
+    // STATE CHO XÁC THỰC
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // Mock State
+    const [authModalOpen, setAuthModalOpen] = useState(false);
+    const [uploadModalOpen, setUploadModalOpen] = useState(false);
+    
+    // MOCK USER DATA
+    const mockUser = {
+        name: "Tên Người Dùng",
+        avatar: "https://i.pravatar.cc/300" 
     }
-  };
 
-  const handleSearchClick = () => {
-    navigate('/search');
-  };
+    const handleLoginSuccess = () => {
+        setIsLoggedIn(true);
+        setAuthModalOpen(false);
+    }
 
-  return (
-    <AppBar position="sticky" elevation={0}>
-      <Toolbar>
-        <Typography
-          variant="h5"
-          component="div"
-          onClick={() => navigate('/')}
-          sx={{ 
-            flexGrow: { xs: 1, sm: 0 },
-            fontWeight: 700,
-            background: 'linear-gradient(45deg, #6366f1, #ec4899)',
-            backgroundClip: 'text',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            mr: 3,
-            cursor: 'pointer',
-          }}
-        >
-          AudioStory
-        </Typography>
+    const handleLogout = () => {
+        setIsLoggedIn(false);
+    }
+    
+    const RenderUserAuth = () => {
+        if (isLoggedIn) {
+            return (
+                <Stack direction="row" spacing={1} alignItems="center">
+                    {/* Nút Upload Track */}
+                    <IconButton 
+                        color="inherit" 
+                        title="Tải Track lên"
+                        onClick={() => setUploadModalOpen(true)}
+                    >
+                        <CloudUpload />
+                    </IconButton>
+                    
+                    {/* Thông báo */}
+                    <IconButton size="large" color="inherit">
+                        <Badge badgeContent={4} color="error">
+                            <NotificationsIcon />
+                        </Badge>
+                    </IconButton>
 
-        <Box
-          component="form"
-          onSubmit={handleSearch}
-          sx={{ flexGrow: { xs: 1, sm: 0 } }}
-        >
-          <Search onClick={handleSearchClick} sx={{ cursor: 'pointer' }}>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Tìm tracks, playlists, channels..."
-              inputProps={{ 'aria-label': 'search' }}
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-              onFocus={handleSearchClick}
+                    {/* Menu người dùng */}
+                    <UserMenu 
+                        user={mockUser} 
+                        onLogout={handleLogout} 
+                        onOpenUpload={() => setUploadModalOpen(true)}
+                    />
+                </Stack>
+            );
+        }
+        return (
+            <Button variant="contained" color="secondary" onClick={() => setAuthModalOpen(true)}>
+                Đăng nhập
+            </Button>
+        );
+    }
+
+    return (
+        <Box sx={{ flexGrow: 1 }}>
+            <AppBar position="static">
+                <Toolbar>
+                    {/* Logo/Tên dự án */}
+                    <Typography
+                        variant="h6"
+                        noWrap
+                        component="div"
+                        sx={{ display: { xs: 'none', sm: 'block' }, cursor: 'pointer' }}
+                        onClick={() => navigate('/')}
+                    >
+                        AudioWeb
+                    </Typography>
+
+                    {/* Thanh tìm kiếm */}
+                    <Search>
+                        <SearchIconWrapper>
+                            <SearchIcon />
+                        </SearchIconWrapper>
+                        <StyledInputBase
+                            placeholder="Tìm kiếm..."
+                            inputProps={{ 'aria-label': 'search' }}
+                        />
+                    </Search>
+
+                    <Box sx={{ flexGrow: 1 }} />
+                    
+                    {/* AUTH / USER SECTION */}
+                    <Box sx={{ display: 'flex' }}>
+                        {RenderUserAuth()}
+                    </Box>
+                </Toolbar>
+            </AppBar>
+            
+            {/* MODALS */}
+            <AuthModal 
+                open={authModalOpen} 
+                onClose={() => setAuthModalOpen(false)} 
+                onLoginSuccess={handleLoginSuccess}
             />
-          </Search>
+            <TrackUploadModal 
+                open={uploadModalOpen} 
+                onClose={() => setUploadModalOpen(false)} 
+            />
         </Box>
-
-        <Box sx={{ flexGrow: 1 }} />
-
-        <IconButton size="large" color="inherit" sx={{ mr: 1 }}>
-          <Badge badgeContent={4} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-
-        <IconButton
-          size="large"
-          edge="end"
-          onClick={handleMenu}
-          color="inherit"
-        >
-          <Avatar sx={{ width: 32, height: 32, bgcolor: 'primary.main' }}>
-            <AccountCircle />
-          </Avatar>
-        </IconButton>
-
-        <Menu
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          onClick={handleClose}
-          transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-        >
-          <MenuItem onClick={handleClose}>
-            <Favorite sx={{ mr: 2 }} /> Yêu thích
-          </MenuItem>
-          <MenuItem onClick={handleClose}>
-            <History sx={{ mr: 2 }} /> Lịch sử nghe
-          </MenuItem>
-          <MenuItem onClick={handleClose}>
-            <AccountCircle sx={{ mr: 2 }} /> Tài khoản
-          </MenuItem>
-          <MenuItem onClick={() => { handleClose(); navigate('/login'); }}>
-            <LoginIcon sx={{ mr: 2 }} /> Đăng nhập
-          </MenuItem>
-          <MenuItem onClick={() => { handleClose(); navigate('/register'); }}>
-            <PersonAdd sx={{ mr: 2 }} /> Đăng ký
-          </MenuItem>
-          <Divider sx={{ my: 1 }} />
-          <MenuItem onClick={handleClose}>
-            <Settings sx={{ mr: 2 }} /> Cài đặt
-          </MenuItem>
-        </Menu>
-      </Toolbar>
-    </AppBar>
-  );
+    );
 };
 
 export default Header;
-

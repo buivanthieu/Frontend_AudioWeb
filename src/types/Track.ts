@@ -7,7 +7,7 @@ export interface TrackList {
     id: number;
     title: string;
     audioUrl: string;
-
+    thumbnail?: string;
     uploadedAt: string; 
 
     categoryName: string;

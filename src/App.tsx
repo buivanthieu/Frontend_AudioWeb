@@ -6,12 +6,8 @@ import Header from './components/Layout/Header';
 import Navigation from './components/Layout/Navigation';
 import AudioPlayer from './components/AudioPlayer/AudioPlayer';
 import Home from './pages/Home/Home';
-import TrackDetail from './pages/TrackDetail';
-import Channel from './pages/Channel';
-import Search from './pages/Search';
-import Login from './pages/Login';
-import Register from './pages/Register';
-
+import TrackDetailsPage from './pages/Track/TrackDetailsPage';
+import UserTrackManagementPage from './pages/Profile/UserTrackManagementPage';
 // Mock current playing track - sẽ được quản lý bằng state/context sau
 const mockCurrentTrack = {
   id: '1',
@@ -37,13 +33,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
-            <Route path="/track/:id" element={<TrackDetail />} />
-            <Route path="/channel/:id" element={<Channel />} />
-            <Route path="/user/:id" element={<Channel />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            {/* Add more routes later */}
+            <Route path="/track/:id" element={<TrackDetailsPage />} /> {/* Dòng này */}
+            <Route path="/my-tracks" element={<UserTrackManagementPage />} /> {/* Dòng này */}
           </Routes>
           <Navigation />
           <AudioPlayer currentTrack={currentTrack} />
